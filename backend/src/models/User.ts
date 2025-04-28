@@ -28,11 +28,12 @@ const UserSchema = new Schema<IUser>(
 
 // Pre-save hook to hash the password if it's modified or new
 UserSchema.pre<IUser>("save", async function (next) {
-    if (!this.isModified("password")) return next();
+    if (!this.isModified("password")) return next(); // Only hash if password is modified
+
     try {
         const salt = await bcrypt.genSalt(10);
         const hash = await bcrypt.hash(this.password, salt);
-        this.password = hash;
+        this.password = hash; // Store the hashed password
         next();
     } catch (error: unknown) {
         next(error as Error); // Cast the error to Error before passing to next()

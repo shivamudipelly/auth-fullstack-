@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bus Icon with Rotation</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex justify-center items-center min-h-screen bg-gray-100">
+
+  <!-- Image with rotation applied on hover -->
+  <div class="w-64 h-64 bg-white rounded-lg overflow-hidden shadow-lg">
+    <img 
+      src="./assets/bus.psd" 
+      alt="Rotating Bus Icon"
+      class="w-full h-full object-cover transition-transform duration-300 hover:rotate-45"
+    >
+  </div>
+
+  <!-- Custom rotating degrees example -->
+  <div class="mt-8">
+    <img 
+      src="./assets/bus.psd" 
+      alt="Custom Rotating Bus Icon"
+      class="rotate-[30deg] w-40 h-40 object-cover"
+    >
+  </div>
+
+</body>
+</html>

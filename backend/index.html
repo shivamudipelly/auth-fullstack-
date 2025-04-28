@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Shiva Mudipelly | Portfolio</title>
+  <style>
+    :root {
+      --primary: #0d6efd;
+      --dark-bg: #111;
+      --light: #fff;
+      --muted: #aaa;
+      --card-bg: #1e1e1e;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--dark-bg);
+      color: var(--light);
+      scroll-behavior: smooth;
+    }
+
+    a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      padding: 2rem;
+    }
+
+    header {
+      background: #000;
+      padding: 0.5rem 2rem;  /* Reduced padding for smaller header */
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.6);
+      height: 60px;  /* Reduced height for smaller header */
+    }
+
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 100%;
+    }
+
+    .logo {
+      font-size: 1.2rem;  /* Reduced font size */
+      font-weight: bold;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 1rem;
+    }
+
+    .nav-links li {
+      display: inline;
+    }
+
+    .nav-links a {
+      font-weight: 500;
+      padding: 0.5rem;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary);
+      border-bottom: 2px solid var(--primary);
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      gap: 5px;
+    }
+
+    .hamburger div {
+      width: 25px;
+      height: 3px;
+      background-color: var(--light);
+    }
+
+    .nav-mobile {
+      display: none;
+      flex-direction: column;
+      background: #000;
+      position: absolute;
+      top: 60px;
+      right: 0;
+      width: 100%;
+      padding: 1rem 2rem;
+      z-index: 999;
+    }
+
+    .nav-mobile a {
+      padding: 0.75rem 0;
+    }
+
+    /* Hero Section */
+    #hero {
+      text-align: center;
+      padding: 5rem 2rem;
+      background: linear-gradient(to bottom, #222, #111);
+    }
+
+    .profile-pic {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      border: 3px solid var(--primary);
+      object-fit: cover;
+      animation: popIn 1s ease-in-out;
+    }
+
+    @keyframes popIn {
+      from {
+        transform: scale(0.6);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    #hero h2 {
+      font-size: 2.5rem;
+      margin-top: 1rem;
+    }
+
+    #hero span {
+      color: var(--primary);
+    }
+
+    #hero p {
+      color: var(--muted);
+      max-width: 600px;
+      margin: auto;
+      margin-top: 1rem;
+    }
+
+    section {
+      padding: 4rem 2rem;
+    }
+
+    h3 {
+      font-size: 2rem;
+      color: var(--primary);
+    }
+
+    ul {
+      padding-left: 1.5rem;
+    }
+
+    .project-grid {
+      display: grid;
+      gap: 1.5rem;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+
+    .project-card {
+      background: var(--card-bg);
+      padding: 1.2rem;
+      border-radius: 10px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .project-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    }
+
+    .project-card h4 {
+      margin-bottom: 0.5rem;
+    }
+
+    .project-card a {
+      display: inline-block;
+      margin-top: 0.5rem;
+      color: var(--primary);
+      font-weight: bold;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    input, textarea {
+      padding: 0.8rem;
+      border-radius: 5px;
+      border: none;
+      background: #222;
+      color: var(--light);
+      font-size: 1rem;
+    }
+
+    button {
+      background: var(--primary);
+      color: white;
+      padding: 0.8rem;
+      border: none;
+      border-radius: 5px;
+      font-weight: 600;
+      transition: background 0.3s ease;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #094ed9;
+    }
+
+    .portfolio-link {
+      margin-top: 2rem;
+      font-style: italic;
+    }
+
+    footer {
+      text-align: center;
+      background: #000;
+      padding: 1.5rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    footer a {
+      color: var(--primary);
+    }
+
+    /* Bottom Navigation Bar */
+    .bottom-nav {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: #111;
+      padding: 1rem 0;
+      box-shadow: 0 -4px 10px rgba(0,0,0,0.6);
+      z-index: 999;
+      text-align: center;
+    }
+
+    .bottom-nav a {
+      color: var(--light);
+      font-size: 1.2rem;
+      padding: 0.5rem;
+      display: inline-block;
+      width: 25%;
+    }
+
+    .bottom-nav a:hover {
+      color: var(--primary);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+
+      .nav-mobile {
+        display: none;
+      }
+
+      .nav-mobile.show {
+        display: flex;
+      }
+
+      .bottom-nav {
+        display: flex;
+      }
+
+      #hero h2 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="container nav-container">
+      <div class="logo">Shiva</div>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="#hero">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="https://shivamudipelly.vercel.app" target="_blank">Portfolio</a></li>
+        </ul>
+
+        <div class="hamburger" onclick="toggleMobileMenu()">
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <div class="nav-mobile" id="mobileMenu">
+    <a href="#hero">Home</a>
+    <a href="#about">About</a>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
+    <a href="https://shivamudipelly.vercel.app" target="_blank">Portfolio</a>
+  </div>
+
+  <!-- Hero Section -->
+  <section id="hero">
+    <div class="container hero-content">
+      <img src="https://media.gettyimages.com/id/1369199360/photo/portrait-of-a-handsome-young-businessman-working-in-office.jpg?s=612x612&w=gi&k=20&c=BFc13n-vhT4GMd0ohRt0PFD3IzJ_Onf6nKDAObgh1CA=" alt="Shiva Profile" class="profile-pic" />
+      <h2>Hello, I'm <span>Shiva Mudipelly</span></h2>
+      <p>A Full Stack Developer passionate about building intuitive web experiences using MERN stack and cloud tech.</p>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="about">
+    <div class="container">
+      <h3>About Me</h3>
+      <p>I am a 3rd-year B.Tech CSE student at Anurag University. I specialize in MERN stack development, cloud platforms, and real-time applications. I'm also an active member of Cloud Club AU.</p>
+      <h4>Hobbies</h4>
+      <ul>
+        <li>Building side projects</li>
+        <li>Playing Chess</li>
+        <li>Exploring cloud & DevOps tools</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section id="projects">
+    <div class="container">
+      <h3>Projects</h3>
+      <div class="project-grid">
+        <div class="project-card">
+          <h4>Bus Tracking System</h4>
+          <p>Real-time bus tracking for Anurag University using MERN and Leaflet.js.</p>
+          <a href="https://bus-tracking-system.vercel.app/" target="_blank">Live Demo</a>
+        </div>
+        <div class="project-card">
+          <h4>Portfolio Website</h4>
+          <p>Personal portfolio using Next.js, Tailwind CSS, and Firebase.</p>
+          <a href="https://shivamudipelly.vercel.app" target="_blank">Visit Portfolio</a>
+        </div>
+        <div class="project-card">
+          <h4>Cloud Club AU Website</h4>
+          <p>Official site for Cloud Club, hosted on GitHub Pages.</p>
+          <a href="https://cloudclubau.github.io/cloud/" target="_blank">Visit Website</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact">
+    <div class="container">
+      <h3>Contact</h3>
+      <form>
+        <input type="text" name="name" placeholder="Your Name" required />
+        <input type="email" name="email" placeholder="Your Email" required />
+        <textarea name="message" placeholder="Your Message" rows="4" required></textarea>
+        <button type="submit">Send Message</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Shiva Mudipelly | <a href="https://github.com/shivamudipelly" target="_blank">GitHub</a> | <a href="https://linkedin.com/in/shivamudipelly" target="_blank">LinkedIn</a></p>
+  </footer>
+
+
+  <script>
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobileMenu');
+      menu.classList.toggle('show');
+    }
+  </script>
+
+</body>
+</html>

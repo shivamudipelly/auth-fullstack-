@@ -1,16 +1,18 @@
 import express from 'express';
-import { getAllUsers, addUser, deleteUser, editUser } from '../controllers/adminController';
+import { getAllUsers, addUser, deleteUser, editUser, getUserById } from '../controllers/adminController';
 import { adminAuth } from '../middleware/authMiddleware';
-import { EditUserRequestBody } from '../controllers/adminController'; // make sure this is exported
+
 
 const router = express.Router();
 
 // Apply admin authentication middleware
 router.use(adminAuth);
 
-router.get('/get-all-persons', getAllUsers);
-router.post('/add-person', addUser);
-router.delete<{ id: string }>('/delete-person/:id', deleteUser);
-router.put<{ id: string }, any, EditUserRequestBody>('/edit-person/:id', editUser);
+router.get('/getAllUsers', getAllUsers);
+router.post('/addUser', addUser);
+router.delete('/deleteUser/:id', deleteUser);
+router.put('/updateUser/:id', editUser);
+router.get('/getUser/:id', getUserById);
 
 export default router;
+// http://localhost:5173/verify-email?token=11e7f8df469f71ea71cdc0ab3af2dbce645b10d0217aa9d5f7681d80c6186f31

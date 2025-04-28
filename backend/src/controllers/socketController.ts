@@ -1,66 +1,81 @@
 import { Server, Socket } from 'socket.io';
-import BusLocation from '../models/BusLocation';
+import Bus from '../models/Bus';
 
-// Define a type for Bus location updates
-interface Bus {
-    busId: string;
-    lat: number;
-    lng: number;
+interface BusLocationUpdate {
+  busId: string;
+  lat: number;
+  lng: number;
 }
 
-// Define events sent from client to server
 interface ClientToServerEvents {
-    joinBus: (payload: { busId: string }) => void;
-    leaveBus: (payload: { busId: string }) => void;
-    locationUpdate: (data: Bus) => void;
+  joinBus: (payload: { busId: string }) => void;
+  leaveBus: (payload: { busId: string }) => void;
+  locationUpdate: (data: BusLocationUpdate) => void;
 }
 
-// Define events sent from server to client
 interface ServerToClientEvents {
-    busLocationUpdate: (data: Bus) => void;
+  busLocationUpdate: (data: BusLocationUpdate) => void;
 }
 
 export const handleSocketConnection = (
-    io: Server<ClientToServerEvents, ServerToClientEvents>
+  io: Server<ClientToServerEvents, ServerToClientEvents>
 ) => {
-    io.on('connection', (socket: Socket<ClientToServerEvents, ServerToClientEvents>) => {
-        console.log('Client connected:', socket.id);
+  io.on('connection', (socket: Socket<ClientToServerEvents, ServerToClientEvents>) => {
+    console.log(`🔌 Client connected: ${socket.id}`);
 
-        // Client joins a room for a specific bus
-        socket.on('joinBus', ({ busId }) => {
-            socket.join(busId);
-            console.log(`Client ${socket.id} joined bus ${busId}`);
-        });
+    socket.on('joinBus', async ({ busId }) => {
+      socket.join(busId);
+      console.log(`🚌 Client ${socket.id} joined room for Bus ${busId}`);
 
-        // Client leaves a bus room
-        socket.on('leaveBus', ({ busId }) => {
-            socket.leave(busId);
-            console.log(`Client ${socket.id} left bus ${busId}`);
-        });
-
-        // Process a location update event
-        socket.on('locationUpdate', async (data: Bus) => {
-            try {
-                const { busId, lat, lng } = data;
-
-                // Update existing location or create a new one for the bus
-                const updatedLocation = await BusLocation.findOneAndUpdate(
-                    { busId },
-                    { latitude: lat, longitude: lng, timestamp: new Date() },
-                    { new: true, upsert: true }
-                );
-
-                console.log(`Updated location for Bus ${busId}:`, updatedLocation);
-
-                // Emit update only to clients subscribed to this bus
-                io.to(busId).emit('busLocationUpdate', { busId, lat, lng });
-            } catch (error) {
-                console.error('Error updating location:', error);
-            }
-        });
-
-        socket.on('disconnect', () => {
-            console.log('Client disconnected:', socket.id);
-        });
+      try {
+        // Optionally send the last known location immediately
+        const existingBus = await Bus.findOne({ busId });
+        if (existingBus) {
+          socket.emit('busLocationUpdate', {
+            busId,
+            lat: existingBus.location.latitude,
+            lng: existingBus.location.longitude,
+          });
+        } else {
+          console.warn(`⚠️ Bus ${busId} not found in DB`);
+        }
+      } catch (error) {
+        console.error(`❌ Error fetching bus location for ${busId}:`, error);
+      }
     });
+
+    socket.on('leaveBus', ({ busId }) => {
+      socket.leave(busId);
+      console.log(`🚪 Client ${socket.id} left room for Bus ${busId}`);
+    });
+
+    socket.on('locationUpdate', async ({ busId, lat, lng }) => {
+      try {
+        const updatedBus = await Bus.findOneAndUpdate(
+          { busId },
+          {
+            location: {
+              latitude: lat,
+              longitude: lng,
+              timestamp: new Date(),
+            },
+          },
+          { new: true }
+        );
+
+        if (updatedBus) {
+          console.log(`📍 Updated Bus ${busId} → ${lat}, ${lng}`);
+          io.to(busId).emit('busLocationUpdate', { busId, lat, lng });
+        } else {
+          console.warn(`⚠️ Bus ${busId} not found in DB`);
+        }
+      } catch (error) {
+        console.error(`❌ Error updating location for Bus ${busId}:`, error);
+      }
+    });
+
+    socket.on('disconnect', () => {
+      console.log(`❌ Client disconnected: ${socket.id}`);
+    });
+  });
 };

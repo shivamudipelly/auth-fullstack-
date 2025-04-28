@@ -140,12 +140,7 @@ export const loginUser = async (
         const cookieExpiry = rememberMe ? 7 * 24 * 60 * 60 * 1000 : 24 * 60 * 60 * 1000; // 7 days or 1 day
 
         const token = jwt.sign(
-            {
-                userId: user._id,
-                name: user.name,
-                email: user.email,
-                role: user.role,
-            },
+            { userId: user._id },
             process.env.JWT_SECRET as string,
             { expiresIn: tokenExpiry }
         );

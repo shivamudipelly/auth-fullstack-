@@ -1,0 +1,1 @@
+export {default as MapboxExample} from './pages/MapboxExample'
